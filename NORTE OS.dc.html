@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#171512;color:#F4EFE7;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  @keyframes ring{0%{transform:scale(.55);opacity:.85;}100%{transform:scale(1.25);opacity:0;}}
+  @keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+  @keyframes wave{0%,100%{transform:scaleY(.28);}50%{transform:scaleY(1);}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;padding:60px 64px 120px;">
+
+  <!-- ===== CANVAS HEADER ===== -->
+  <div style="max-width:1100px;margin-bottom:72px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:26px;">
+      <div style="width:14px;height:14px;background:#E8B65C;transform:rotate(45deg);border-radius:2px;"></div>
+      <span style="font-size:15px;letter-spacing:.34em;font-weight:600;">NORTE</span>
+      <span style="font-size:11px;letter-spacing:.14em;padding:3px 9px;border:1px solid #3A362F;border-radius:6px;color:#B8B1A6;">OS</span>
+    </div>
+    <div style="font-family:'Instrument Serif',serif;font-size:56px;line-height:1.02;font-weight:400;margin-bottom:18px;">Primera versión visual — MVP</div>
+    <div style="font-size:18px;line-height:1.55;color:#B8B1A6;max-width:640px;">Sistema operativo personal por voz. 14 pantallas que cubren el loop completo: hablar → clasificar → guardar → siguiente acción. Dark, mobile-first, voz primero, una acción por pantalla.</div>
+
+    <!-- legend -->
+    <div style="display:flex;flex-wrap:wrap;gap:32px;margin-top:38px;align-items:center;">
+      <div style="display:flex;gap:16px;align-items:center;">
+        <span style="display:flex;align-items:center;gap:7px;font-size:12px;color:#8B857B;"><span style="width:15px;height:15px;border-radius:4px;background:#0E0D0C;border:1px solid #2A2723;"></span>fondo</span>
+        <span style="display:flex;align-items:center;gap:7px;font-size:12px;color:#8B857B;"><span style="width:15px;height:15px;border-radius:4px;background:#1E1B17;"></span>superficie</span>
+        <span style="display:flex;align-items:center;gap:7px;font-size:12px;color:#8B857B;"><span style="width:15px;height:15px;border-radius:4px;background:#E8B65C;"></span>acento</span>
+        <span style="display:flex;align-items:center;gap:7px;font-size:12px;color:#8B857B;"><span style="width:15px;height:15px;border-radius:4px;background:#D98C86;"></span>terapia</span>
+      </div>
+      <div style="width:1px;height:20px;background:#302C26;"></div>
+      <span style="font-size:12px;color:#8B857B;"><span style="color:#F4EFE7;">Hanken Grotesk</span> UI · <span style="font-family:'Instrument Serif',serif;color:#F4EFE7;font-size:15px;">Instrument Serif</span> reflexivo</span>
+      <div style="width:1px;height:20px;background:#302C26;"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;color:#B8B1A6;padding:4px 10px;border:1px solid #302C26;border-radius:20px;">Voz primero</span>
+        <span style="font-size:11px;color:#B8B1A6;padding:4px 10px;border:1px solid #302C26;border-radius:20px;">Una acción por pantalla</span>
+        <span style="font-size:11px;color:#B8B1A6;padding:4px 10px;border:1px solid #302C26;border-radius:20px;">El contexto manda</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- GROUP A — NÚCLEO DE VOZ -->
+  <!-- ============================================================= -->
+  <div style="margin-bottom:16px;display:flex;align-items:baseline;gap:16px;">
+    <div style="font-size:22px;font-weight:600;">Núcleo de voz</div>
+    <div style="font-size:14px;color:#7C766C;">El loop central: capturar, clasificar, elegir modo.</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:44px;align-items:flex-start;margin-bottom:88px;">
+
+    <!-- 01 ONBOARDING -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">01</span>&nbsp;&nbsp;Onboarding</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:0 32px;display:flex;flex-direction:column;">
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+            <div style="display:flex;align-items:center;gap:11px;"><div style="width:12px;height:12px;background:#E8B65C;transform:rotate(45deg);border-radius:2px;"></div><span style="font-size:13px;letter-spacing:.3em;font-weight:600;">NORTE</span></div>
+            <div style="font-family:'Instrument Serif',serif;font-size:46px;line-height:1.03;">Hola.<br>Soy tu norte.</div>
+            <div style="font-size:16px;line-height:1.55;color:#B8B1A6;max-width:270px;">Háblame como a alguien que ya conoce tu vida. Yo la organizo — tú solo sigue avanzando.</div>
+          </div>
+          <div style="padding-bottom:42px;display:flex;flex-direction:column;gap:18px;">
+            <div style="height:60px;border-radius:18px;background:#E8B65C;color:#1A1206;display:flex;align-items:center;justify-content:center;gap:11px;font-weight:600;font-size:17px;box-shadow:0 12px 34px -10px rgba(232,182,92,.5);"><span style="width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#FBE5C0,#B9832F);"></span>Empezar hablando</div>
+            <div style="text-align:center;font-size:14px;color:#8B857B;">Ya tengo cuenta</div>
+            <div style="text-align:center;font-size:12px;color:#5E594F;">Sin tutoriales. La app se explica hablando.</div>
+          </div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A362F;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+    <!-- 02 HOY -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">02</span>&nbsp;&nbsp;Hoy · dashboard</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:8px 24px 0;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
+          <div>
+            <div style="font-size:13px;color:#7C766C;margin-bottom:4px;">Martes 1 de julio</div>
+            <div style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1;">Buenos días, Jonathan</div>
+          </div>
+          <!-- prioridad hero -->
+          <div style="background:linear-gradient(160deg,#241E12,#1A1611);border:1px solid #4A3C1E;border-radius:22px;padding:20px;">
+            <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E8B65C;margin-bottom:10px;">Tu prioridad hoy</div>
+            <div style="font-size:19px;line-height:1.3;font-weight:500;margin-bottom:16px;">Definir los 3 paquetes de precios de Cloud Studio</div>
+            <div style="display:flex;gap:8px;"><span style="font-size:12px;color:#D9CFC0;padding:5px 11px;background:#2A2317;border-radius:20px;">Cloud Studio</span><span style="font-size:12px;color:#B8B1A6;padding:5px 11px;background:#221E17;border-radius:20px;">≈ 25 min</span></div>
+          </div>
+          <!-- energia -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#1A1713;border-radius:18px;">
+            <div><div style="font-size:12px;color:#7C766C;margin-bottom:3px;">Contexto</div><div style="font-size:15px;font-weight:500;">Energía media · en casa</div></div>
+            <div style="display:flex;gap:4px;align-items:flex-end;"><span style="width:6px;height:11px;background:#E8B65C;border-radius:2px;"></span><span style="width:6px;height:17px;background:#E8B65C;border-radius:2px;"></span><span style="width:6px;height:23px;background:#3A362F;border-radius:2px;"></span></div>
+          </div>
+          <!-- rapido -->
+          <div>
+            <div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#7C766C;margin-bottom:10px;">Tareas rápidas</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;background:#1A1713;border-radius:14px;"><span style="width:20px;height:20px;border:1.5px solid #4A453C;border-radius:50%;flex:none;"></span><span style="flex:1;font-size:15px;">Responder correo del proveedor</span><span style="font-size:12px;color:#7C766C;">5 min</span></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;background:#1A1713;border-radius:14px;"><span style="width:20px;height:20px;border:1.5px solid #4A453C;border-radius:50%;flex:none;"></span><span style="flex:1;font-size:15px;">Anotar idea de nombre de marca</span><span style="font-size:12px;color:#7C766C;">2 min</span></div>
+            </div>
+          </div>
+          <!-- recordatorio -->
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid #2A2723;border-radius:14px;"><span style="width:8px;height:8px;border-radius:50%;background:#D98C86;flex:none;"></span><span style="flex:1;font-size:14px;color:#D9CFC0;">Llamar al diseñador</span><span style="font-size:13px;color:#7C766C;">15:00</span></div>
+        </div>
+        <!-- NAV -->
+        <div style="position:absolute;left:0;right:0;bottom:0;height:92px;background:linear-gradient(to top,#0E0D0C 55%,rgba(14,13,12,0));display:flex;align-items:center;justify-content:space-around;padding:0 26px 20px;">
+          <span style="font-size:12px;color:#E8B65C;font-weight:600;">Hoy</span>
+          <span style="font-size:12px;color:#6E685E;">Proyectos</span>
+          <div style="width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#F5D592,#E8B65C 55%,#B9832F);box-shadow:0 0 26px rgba(232,182,92,.55);margin-top:-22px;animation:breathe 4s ease-in-out infinite;"></div>
+          <span style="font-size:12px;color:#6E685E;">Diario</span>
+          <span style="font-size:12px;color:#6E685E;">Semana</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 VOZ ACTIVA -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">03</span>&nbsp;&nbsp;Voz activa · captura</div>
+      <div style="width:384px;height:812px;background:radial-gradient(120% 60% at 50% 42%,#1C1710,#0B0A09 70%);border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:12px 30px 0;display:flex;flex-direction:column;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:13px;color:#E8B65C;padding:6px 13px;border:1px solid #4A3C1E;border-radius:20px;">Captura rápida</span>
+            <span style="width:34px;height:34px;border-radius:50%;border:1px solid #3A362F;display:flex;align-items:center;justify-content:center;color:#8B857B;font-size:18px;">✕</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;">
+            <div style="position:relative;width:210px;height:210px;display:grid;place-items:center;">
+              <div style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(232,182,92,.3);animation:ring 3s ease-out infinite;"></div>
+              <div style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(232,182,92,.22);animation:ring 3s ease-out infinite 1s;"></div>
+              <div style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(232,182,92,.16);animation:ring 3s ease-out infinite 2s;"></div>
+              <div style="width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 36% 30%,#F7DFA8,#E8B65C 48%,#A9772A 100%);box-shadow:0 0 70px rgba(232,182,92,.5);animation:breathe 3.5s ease-in-out infinite;"></div>
+            </div>
+            <div style="font-size:15px;letter-spacing:.06em;color:#B8B1A6;">Escuchando…</div>
+          </div>
+          <div style="padding-bottom:16px;">
+            <div style="font-size:19px;line-height:1.5;color:#F4EFE7;text-align:center;">«Guarda esto: vender paquetes de branding para negocios latinos, identidad completa en una semana…»</div>
+          </div>
+          <div style="padding-bottom:40px;display:flex;flex-direction:column;align-items:center;gap:18px;">
+            <div style="display:flex;align-items:center;gap:5px;height:34px;">
+              <span style="width:4px;height:34px;background:#E8B65C;border-radius:3px;animation:wave 1s ease-in-out infinite;"></span>
+              <span style="width:4px;height:34px;background:#E8B65C;border-radius:3px;animation:wave 1s ease-in-out infinite .15s;"></span>
+              <span style="width:4px;height:34px;background:#E8B65C;border-radius:3px;animation:wave 1s ease-in-out infinite .3s;"></span>
+              <span style="width:4px;height:34px;background:#E8B65C;border-radius:3px;animation:wave 1s ease-in-out infinite .45s;"></span>
+              <span style="width:4px;height:34px;background:#E8B65C;border-radius:3px;animation:wave 1s ease-in-out infinite .6s;"></span>
+              <span style="width:4px;height:34px;background:#E8B65C;border-radius:3px;animation:wave 1s ease-in-out infinite .3s;"></span>
+              <span style="width:4px;height:34px;background:#E8B65C;border-radius:3px;animation:wave 1s ease-in-out infinite .15s;"></span>
+            </div>
+            <div style="font-size:14px;color:#7C766C;">Toca para terminar</div>
+          </div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A362F;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+    <!-- 04 CONFIRMACIÓN -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">04</span>&nbsp;&nbsp;Confirmación · clasificación</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:20px 30px 0;display:flex;flex-direction:column;">
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+            <div style="width:64px;height:64px;border-radius:50%;background:#E8B65C;display:flex;align-items:center;justify-content:center;color:#1A1206;font-size:30px;">✓</div>
+            <div>
+              <div style="font-size:13px;color:#7C766C;margin-bottom:6px;">Guardado como</div>
+              <div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1.05;">Idea comercial</div>
+              <div style="margin-top:12px;display:flex;gap:8px;"><span style="font-size:13px;color:#D9CFC0;padding:6px 13px;background:#2A2317;border-radius:20px;">→ Cloud Studio</span></div>
+            </div>
+            <div style="background:#1A1713;border-left:2px solid #4A3C1E;border-radius:0 14px 14px 0;padding:16px 18px;font-size:15px;line-height:1.5;color:#C9C1B5;">«Vender paquetes de branding para negocios latinos, identidad completa en una semana.»</div>
+          </div>
+          <div style="padding-bottom:36px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:10px;">
+              <div style="flex:1;height:50px;border:1px solid #3A362F;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#C9C1B5;">Cambiar categoría</div>
+              <div style="flex:1;height:50px;border:1px solid #3A362F;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#C9C1B5;">Deshacer</div>
+            </div>
+            <div style="height:58px;border-radius:16px;background:#E8B65C;color:#1A1206;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px;">Listo</div>
+          </div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A362F;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+    <!-- 05 MODOS -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">05</span>&nbsp;&nbsp;Selector de modo</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:16px 26px 0;display:flex;flex-direction:column;gap:22px;">
+          <div><div style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1;">¿En qué modo?</div><div style="font-size:14px;color:#7C766C;margin-top:6px;">Cada modo escucha distinto.</div></div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <div style="display:flex;align-items:center;gap:15px;padding:17px 18px;background:linear-gradient(120deg,#241E12,#1A1611);border:1px solid #4A3C1E;border-radius:18px;">
+              <span style="width:11px;height:11px;background:#E8B65C;border-radius:50%;flex:none;"></span>
+              <div style="flex:1;"><div style="font-size:16px;font-weight:600;">Captura rápida</div><div style="font-size:13px;color:#9B948A;margin-top:2px;">Suelta la idea, yo la clasifico.</div></div>
+              <span style="font-size:10px;letter-spacing:.1em;color:#E8B65C;">SUGERIDO</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;padding:17px 18px;background:#161310;border:1px solid #262320;border-radius:18px;">
+              <span style="width:11px;height:11px;background:#7FA8C9;border-radius:50%;flex:none;"></span>
+              <div style="flex:1;"><div style="font-size:16px;font-weight:600;">Proyecto</div><div style="font-size:13px;color:#9B948A;margin-top:2px;">Estado, pendientes y próxima acción.</div></div>
+              <span style="color:#5E594F;font-size:18px;">›</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;padding:17px 18px;background:#161310;border:1px solid #262320;border-radius:18px;">
+              <span style="width:11px;height:11px;background:#9FCF9F;border-radius:50%;flex:none;"></span>
+              <div style="flex:1;"><div style="font-size:16px;font-weight:600;">Enfoque</div><div style="font-size:13px;color:#9B948A;margin-top:2px;">Dime tu tiempo y energía, te doy qué avanzar.</div></div>
+              <span style="color:#5E594F;font-size:18px;">›</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;padding:17px 18px;background:#161310;border:1px solid #262320;border-radius:18px;">
+              <span style="width:11px;height:11px;background:#D98C86;border-radius:50%;flex:none;"></span>
+              <div style="flex:1;"><div style="font-size:16px;font-weight:600;">Terapia</div><div style="font-size:13px;color:#9B948A;margin-top:2px;">Un espacio para desahogarte con calma.</div></div>
+              <span style="color:#5E594F;font-size:18px;">›</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;padding:17px 18px;background:#161310;border:1px solid #262320;border-radius:18px;">
+              <span style="width:11px;height:11px;background:#C9A6D9;border-radius:50%;flex:none;"></span>
+              <div style="flex:1;"><div style="font-size:16px;font-weight:600;">Revisión semanal</div><div style="font-size:13px;color:#9B948A;margin-top:2px;">Qué avanzó, qué se repitió.</div></div>
+              <span style="color:#5E594F;font-size:18px;">›</span>
+            </div>
+          </div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A362F;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- GROUP B — PROYECTOS -->
+  <!-- ============================================================= -->
+  <div style="margin-bottom:16px;display:flex;align-items:baseline;gap:16px;">
+    <div style="font-size:22px;font-weight:600;">Proyectos</div>
+    <div style="font-size:14px;color:#7C766C;">Seguimiento en paralelo · próxima acción, pendientes, bloqueo.</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:44px;align-items:flex-start;margin-bottom:88px;">
+
+    <!-- 06 PROYECTOS LISTA -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">06</span>&nbsp;&nbsp;Proyectos · lista</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:8px 24px 0;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;"><div style="font-family:'Instrument Serif',serif;font-size:34px;">Proyectos</div><div style="font-size:13px;color:#7C766C;">4 activos</div></div>
+          <!-- principal -->
+          <div style="background:linear-gradient(160deg,#241E12,#1A1611);border:1px solid #4A3C1E;border-radius:22px;padding:20px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span style="width:8px;height:8px;border-radius:50%;background:#9FCF9F;"></span><span style="font-size:11px;letter-spacing:.1em;color:#9B948A;">ACTIVO · P1</span><span style="margin-left:auto;font-size:10px;letter-spacing:.12em;color:#E8B65C;">PRINCIPAL</span></div>
+            <div style="font-size:21px;font-weight:600;margin-bottom:8px;">Cloud Studio</div>
+            <div style="font-size:14px;color:#9B948A;margin-bottom:16px;">Próximo: definir los 3 paquetes de precios</div>
+            <div style="height:6px;background:#2A2317;border-radius:4px;overflow:hidden;"><div style="width:38%;height:100%;background:#E8B65C;border-radius:4px;"></div></div>
+          </div>
+          <!-- otros -->
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="padding:16px 18px;background:#161310;border:1px solid #242018;border-radius:18px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><span style="width:7px;height:7px;border-radius:50%;background:#9FCF9F;"></span><span style="font-size:16px;font-weight:600;">BarberDesk</span><span style="margin-left:auto;font-size:12px;color:#7C766C;">P2</span></div><div style="font-size:13px;color:#8B857B;">Próximo: revisar feedback de la beta</div></div>
+            <div style="padding:16px 18px;background:#161310;border:1px solid #242018;border-radius:18px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><span style="width:7px;height:7px;border-radius:50%;background:#C9A66A;"></span><span style="font-size:16px;font-weight:600;">Curso de marca personal</span><span style="margin-left:auto;font-size:12px;color:#7C766C;">P3</span></div><div style="font-size:13px;color:#8B857B;">En pausa · retomar en agosto</div></div>
+            <div style="padding:16px 18px;background:#161310;border:1px solid #242018;border-radius:18px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><span style="width:7px;height:7px;border-radius:50%;background:#7C7C8A;"></span><span style="font-size:16px;font-weight:600;">Newsletter latino</span><span style="margin-left:auto;font-size:12px;color:#7C766C;">Idea</span></div><div style="font-size:13px;color:#8B857B;">Sin próxima acción definida</div></div>
+          </div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:92px;background:linear-gradient(to top,#0E0D0C 55%,rgba(14,13,12,0));display:flex;align-items:center;justify-content:space-around;padding:0 26px 20px;">
+          <span style="font-size:12px;color:#6E685E;">Hoy</span>
+          <span style="font-size:12px;color:#E8B65C;font-weight:600;">Proyectos</span>
+          <div style="width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#F5D592,#E8B65C 55%,#B9832F);box-shadow:0 0 26px rgba(232,182,92,.55);margin-top:-22px;"></div>
+          <span style="font-size:12px;color:#6E685E;">Diario</span>
+          <span style="font-size:12px;color:#6E685E;">Semana</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 PROYECTO DETALLE -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">07</span>&nbsp;&nbsp;Proyecto · detalle</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:6px 24px 0;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:14px;"><span style="font-size:20px;color:#8B857B;">‹</span><div style="flex:1;"><div style="font-size:22px;font-weight:600;">Cloud Studio</div></div><span style="font-size:12px;color:#9FCF9F;padding:5px 11px;border:1px solid #2E3A2E;border-radius:20px;">Activo</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="flex:1;height:6px;background:#221E17;border-radius:4px;overflow:hidden;"><div style="width:38%;height:100%;background:#E8B65C;border-radius:4px;"></div></div><span style="font-size:13px;color:#B8B1A6;">38%</span></div>
+          <!-- proxima accion -->
+          <div style="background:linear-gradient(160deg,#241E12,#1A1611);border:1px solid #4A3C1E;border-radius:20px;padding:18px;">
+            <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E8B65C;margin-bottom:9px;">Próxima acción</div>
+            <div style="font-size:17px;font-weight:500;line-height:1.3;margin-bottom:14px;">Definir los 3 paquetes de precios</div>
+            <div style="height:46px;border-radius:12px;background:#E8B65C;color:#1A1206;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;">Empezar</div>
+          </div>
+          <!-- bloqueo -->
+          <div style="background:rgba(217,140,134,.08);border:1px solid rgba(217,140,134,.3);border-radius:16px;padding:15px 17px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#D98C86;"></span><span style="font-size:11px;letter-spacing:.1em;color:#D98C86;">BLOQUEO ACTUAL</span></div>
+            <div style="font-size:14px;color:#D9CFC0;line-height:1.4;">Esperando cotización del proveedor de impresión — 4 días.</div>
+          </div>
+          <!-- tareas -->
+          <div>
+            <div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#7C766C;margin-bottom:10px;">Pendientes · 5</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 15px;background:#161310;border-radius:13px;"><span style="width:19px;height:19px;border:1.5px solid #4A453C;border-radius:50%;flex:none;"></span><span style="flex:1;font-size:14px;">Escribir textos de la landing</span><span style="font-size:11px;color:#9FCF9F;">baja</span><span style="font-size:11px;color:#7C766C;">30m</span></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 15px;background:#161310;border-radius:13px;"><span style="width:19px;height:19px;border:1.5px solid #4A453C;border-radius:50%;flex:none;"></span><span style="flex:1;font-size:14px;">Cerrar identidad visual</span><span style="font-size:11px;color:#E8B65C;">alta</span><span style="font-size:11px;color:#7C766C;">90m</span></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 15px;background:#161310;border-radius:13px;opacity:.55;"><span style="width:19px;height:19px;border-radius:50%;background:#4A453C;display:flex;align-items:center;justify-content:center;font-size:11px;color:#0E0D0C;flex:none;">✓</span><span style="flex:1;font-size:14px;text-decoration:line-through;color:#7C766C;">Registrar dominio</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A362F;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- GROUP C — ENFOQUE -->
+  <!-- ============================================================= -->
+  <div style="margin-bottom:16px;display:flex;align-items:baseline;gap:16px;">
+    <div style="font-size:22px;font-weight:600;">Enfoque</div>
+    <div style="font-size:14px;color:#7C766C;">Contexto con mínima fricción → una microacción real.</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:44px;align-items:flex-start;margin-bottom:88px;">
+
+    <!-- 08 ENFOQUE CONTEXTO -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">08</span>&nbsp;&nbsp;Enfoque · contexto</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:16px 28px 0;display:flex;flex-direction:column;">
+          <div style="font-family:'Instrument Serif',serif;font-size:34px;line-height:1.02;margin-bottom:34px;">Tienes un<br>momento.</div>
+          <div style="display:flex;flex-direction:column;gap:28px;flex:1;">
+            <div>
+              <div style="font-size:14px;color:#9B948A;margin-bottom:12px;">¿Cuánto tiempo?</div>
+              <div style="display:flex;gap:10px;">
+                <div style="flex:1;height:56px;border-radius:14px;background:#161310;border:1px solid #262320;display:flex;align-items:center;justify-content:center;font-size:15px;color:#B8B1A6;">5 min</div>
+                <div style="flex:1;height:56px;border-radius:14px;background:#E8B65C;color:#1A1206;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;">10 min</div>
+                <div style="flex:1;height:56px;border-radius:14px;background:#161310;border:1px solid #262320;display:flex;align-items:center;justify-content:center;font-size:15px;color:#B8B1A6;">30 min</div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:14px;color:#9B948A;margin-bottom:12px;">¿Energía?</div>
+              <div style="display:flex;gap:10px;">
+                <div style="flex:1;height:56px;border-radius:14px;background:#221E17;border:1px solid #4A3C1E;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;"><span style="font-size:14px;color:#F4EFE7;">Baja</span><span style="width:5px;height:8px;background:#E8B65C;border-radius:2px;"></span></div>
+                <div style="flex:1;height:56px;border-radius:14px;background:#161310;border:1px solid #262320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;"><span style="font-size:14px;color:#B8B1A6;">Media</span></div>
+                <div style="flex:1;height:56px;border-radius:14px;background:#161310;border:1px solid #262320;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;"><span style="font-size:14px;color:#B8B1A6;">Alta</span></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:14px;color:#9B948A;margin-bottom:12px;">¿Dónde?</div>
+              <div style="display:flex;gap:10px;">
+                <div style="flex:1;height:56px;border-radius:14px;background:#161310;border:1px solid #262320;display:flex;align-items:center;justify-content:center;font-size:14px;color:#B8B1A6;">Trabajo</div>
+                <div style="flex:1;height:56px;border-radius:14px;background:#221E17;border:1px solid #4A3C1E;display:flex;align-items:center;justify-content:center;font-size:14px;color:#F4EFE7;">Casa</div>
+                <div style="flex:1;height:56px;border-radius:14px;background:#161310;border:1px solid #262320;display:flex;align-items:center;justify-content:center;font-size:14px;color:#B8B1A6;">Manejando</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding-bottom:40px;"><div style="height:60px;border-radius:16px;background:#E8B65C;color:#1A1206;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;">Dime qué avanzo</div></div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A362F;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+    <!-- 09 ENFOQUE MICROACCIÓN -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">09</span>&nbsp;&nbsp;Enfoque · microacción</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:20px 30px 0;display:flex;flex-direction:column;">
+          <div style="display:flex;gap:8px;margin-bottom:30px;"><span style="font-size:12px;color:#B8B1A6;padding:6px 12px;background:#1A1713;border-radius:20px;">10 min</span><span style="font-size:12px;color:#B8B1A6;padding:6px 12px;background:#1A1713;border-radius:20px;">energía baja</span><span style="font-size:12px;color:#B8B1A6;padding:6px 12px;background:#1A1713;border-radius:20px;">en casa</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;">
+            <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#E8B65C;">Avanza esto ahora</div>
+            <div style="font-family:'Instrument Serif',serif;font-size:34px;line-height:1.12;">Ordena las 3 ideas sueltas de Cloud Studio en su proyecto.</div>
+            <div style="font-size:15px;line-height:1.55;color:#9B948A;">Bajo esfuerzo, cabe en tus 10 minutos y no necesitas computadora. Deja el trabajo pesado para cuando tengas más energía.</div>
+          </div>
+          <div style="padding-bottom:40px;display:flex;flex-direction:column;gap:12px;">
+            <div style="height:60px;border-radius:16px;background:#E8B65C;color:#1A1206;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;">Empezar</div>
+            <div style="text-align:center;font-size:14px;color:#8B857B;padding:8px;">Dame otra</div>
+          </div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A362F;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- GROUP D — TERAPIA & DIARIO -->
+  <!-- ============================================================= -->
+  <div style="margin-bottom:16px;display:flex;align-items:baseline;gap:16px;">
+    <div style="font-size:22px;font-weight:600;">Terapia & Diario</div>
+    <div style="font-size:14px;color:#7C766C;">Desahogo que cierra en claridad · piso de seguridad invisible.</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:44px;align-items:flex-start;margin-bottom:88px;">
+
+    <!-- 10 DIARIO -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">10</span>&nbsp;&nbsp;Diario</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:8px 26px 0;display:flex;flex-direction:column;gap:20px;overflow:hidden;">
+          <div style="font-family:'Instrument Serif',serif;font-size:34px;">Diario</div>
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div style="border-bottom:1px solid #201D18;padding-bottom:20px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;"><span style="font-size:12px;color:#7C766C;">Ayer</span><span style="width:3px;height:3px;border-radius:50%;background:#4A453C;"></span><span style="font-size:12px;color:#D98C86;">Drenado, pero en paz</span></div>
+              <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:19px;line-height:1.4;color:#D9CFC0;">"El día pesó, pero terminé viendo que sí avancé en lo que importaba…"</div>
+              <div style="display:flex;gap:4px;margin-top:12px;align-items:flex-end;"><span style="width:5px;height:9px;background:#D98C86;border-radius:1px;"></span><span style="width:5px;height:13px;background:#D98C86;border-radius:1px;"></span><span style="width:5px;height:17px;background:#3A362F;border-radius:1px;"></span></div>
+            </div>
+            <div style="border-bottom:1px solid #201D18;padding-bottom:20px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;"><span style="font-size:12px;color:#7C766C;">Sábado</span><span style="width:3px;height:3px;border-radius:50%;background:#4A453C;"></span><span style="font-size:12px;color:#9FCF9F;">Con claridad</span></div>
+              <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:19px;line-height:1.4;color:#D9CFC0;">"Decidí que Cloud Studio es la prioridad real este mes. Lo demás puede esperar."</div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;"><span style="font-size:12px;color:#7C766C;">Jueves</span><span style="width:3px;height:3px;border-radius:50%;background:#4A453C;"></span><span style="font-size:12px;color:#C9A66A;">Inquieto</span></div>
+              <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:19px;line-height:1.4;color:#D9CFC0;">"Demasiadas ideas a la vez. Necesito soltar algunas."</div>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:0 26px 26px;background:linear-gradient(to top,#0E0D0C 62%,rgba(14,13,12,0));">
+          <div style="height:58px;border-radius:16px;background:rgba(217,140,134,.14);border:1px solid rgba(217,140,134,.4);color:#EAB8B3;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:600;font-size:16px;"><span style="width:9px;height:9px;background:#D98C86;transform:rotate(45deg);border-radius:1px;"></span>Hablar con NORTE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 TERAPIA + PISO DE SEGURIDAD -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#D98C86;">11</span>&nbsp;&nbsp;Terapia · piso de seguridad</div>
+      <div style="width:384px;height:812px;background:radial-gradient(120% 55% at 50% 40%,#1E1414,#0B0908 72%);border-radius:46px;border:1px solid #2A2320;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:12px 28px 0;display:flex;flex-direction:column;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:13px;color:#EAB8B3;padding:6px 13px;border:1px solid rgba(217,140,134,.4);border-radius:20px;">Terapia</span>
+            <span style="width:34px;height:34px;border-radius:50%;border:1px solid #3A302E;display:flex;align-items:center;justify-content:center;color:#8B857B;font-size:18px;">✕</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:20px;margin-top:26px;">
+            <div style="position:relative;width:120px;height:120px;display:grid;place-items:center;">
+              <div style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(217,140,134,.28);animation:ring 4s ease-out infinite;"></div>
+              <div style="width:82px;height:82px;border-radius:50%;background:radial-gradient(circle at 36% 30%,#F2C4BF,#D98C86 55%,#A85E58);box-shadow:0 0 50px rgba(217,140,134,.4);animation:breathe 4.5s ease-in-out infinite;"></div>
+            </div>
+            <div style="font-size:14px;color:#B8A9A6;">Aquí estoy. Sin prisa.</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px;">
+            <div style="align-self:flex-end;max-width:78%;background:#1E1917;border-radius:18px 18px 4px 18px;padding:13px 16px;font-size:15px;line-height:1.45;color:#D9CFC0;">Siento que por más que avanzo, nunca es suficiente.</div>
+            <div style="align-self:flex-start;max-width:82%;font-family:'Instrument Serif',serif;font-size:20px;line-height:1.4;color:#EDE6DE;">"Suena agotador cargar eso todos los días. ¿Qué sería suficiente, para ti, hoy?"</div>
+          </div>
+          <!-- piso de seguridad -->
+          <div style="background:rgba(217,140,134,.09);border:1px solid rgba(217,140,134,.28);border-radius:16px;padding:15px 17px;margin-bottom:24px;">
+            <div style="font-size:14px;line-height:1.5;color:#E3D6D2;">Si en algún momento el peso se vuelve demasiado, no tienes que cargarlo solo. La <span style="color:#EAB8B3;font-weight:600;">Línea de la Vida (988)</span> tiene a alguien disponible ahora mismo.</div>
+          </div>
+          <div style="padding-bottom:32px;display:flex;flex-direction:column;align-items:center;gap:14px;">
+            <div style="display:flex;align-items:center;gap:5px;height:26px;"><span style="width:4px;height:26px;background:#D98C86;border-radius:3px;animation:wave 1.4s ease-in-out infinite;"></span><span style="width:4px;height:26px;background:#D98C86;border-radius:3px;animation:wave 1.4s ease-in-out infinite .2s;"></span><span style="width:4px;height:26px;background:#D98C86;border-radius:3px;animation:wave 1.4s ease-in-out infinite .4s;"></span><span style="width:4px;height:26px;background:#D98C86;border-radius:3px;animation:wave 1.4s ease-in-out infinite .2s;"></span><span style="width:4px;height:26px;background:#D98C86;border-radius:3px;animation:wave 1.4s ease-in-out infinite .1s;"></span></div>
+            <div style="font-size:13px;color:#8B7E7B;">Toca para terminar</div>
+          </div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A302E;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- GROUP E — CIERRE -->
+  <!-- ============================================================= -->
+  <div style="margin-bottom:16px;display:flex;align-items:baseline;gap:16px;">
+    <div style="font-size:22px;font-weight:600;">Revisión, recordatorios y cuenta</div>
+    <div style="font-size:14px;color:#7C766C;">El sistema mira el conjunto · aislamiento de datos desde el día 1.</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:44px;align-items:flex-start;">
+
+    <!-- 12 REVISIÓN SEMANAL -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">12</span>&nbsp;&nbsp;Revisión semanal</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:8px 26px 0;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
+          <div><div style="font-size:12px;color:#7C766C;margin-bottom:4px;">24 – 30 junio</div><div style="font-family:'Instrument Serif',serif;font-size:34px;">Tu semana</div></div>
+          <div style="font-family:'Instrument Serif',serif;font-size:19px;line-height:1.42;color:#D9CFC0;">Avanzaste sobre todo en Cloud Studio; BarberDesk quedó en pausa. Tu energía subió a media-alta después del martes.</div>
+          <!-- stats bar -->
+          <div style="background:#161310;border:1px solid #242018;border-radius:16px;padding:16px 18px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;"><span style="color:#9B948A;">Tareas</span><span style="color:#B8B1A6;">12 hechas · 5 pendientes</span></div>
+            <div style="height:8px;border-radius:4px;background:#2A2317;overflow:hidden;display:flex;"><div style="width:70%;height:100%;background:#9FCF9F;"></div><div style="flex:1;height:100%;background:#4A3C1E;"></div></div>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <div style="flex:1;background:#161310;border:1px solid #242018;border-radius:16px;padding:15px;"><div style="font-size:12px;color:#7C766C;margin-bottom:6px;">Ánimo promedio</div><div style="font-size:17px;font-weight:600;">Estable ↗</div></div>
+            <div style="flex:1;background:#161310;border:1px solid #242018;border-radius:16px;padding:15px;"><div style="font-size:12px;color:#7C766C;margin-bottom:6px;">Notas</div><div style="font-size:17px;font-weight:600;">6 ideas · 2 bloqueos</div></div>
+          </div>
+          <!-- repetido -->
+          <div style="background:rgba(217,140,134,.08);border:1px solid rgba(217,140,134,.28);border-radius:16px;padding:15px 17px;">
+            <div style="font-size:11px;letter-spacing:.1em;color:#D98C86;margin-bottom:6px;">SE REPITIÓ</div>
+            <div style="font-size:14px;color:#D9CFC0;line-height:1.4;">Bloqueo "esperando a terceros" — 3 veces esta semana.</div>
+          </div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:0 26px 26px;background:linear-gradient(to top,#0E0D0C 62%,rgba(14,13,12,0));">
+          <div style="height:58px;border-radius:16px;background:#E8B65C;color:#1A1206;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px;">Planificar la próxima</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13 RECORDATORIOS -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">13</span>&nbsp;&nbsp;Recordatorios</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:8px 26px 0;display:flex;flex-direction:column;gap:22px;overflow:hidden;">
+          <div style="font-family:'Instrument Serif',serif;font-size:34px;">Recordatorios</div>
+          <div>
+            <div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#7C766C;margin-bottom:12px;">Hoy</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;gap:14px;padding:15px 17px;background:#161310;border:1px solid #242018;border-radius:15px;"><div style="text-align:center;flex:none;width:44px;"><div style="font-size:17px;font-weight:600;">15:00</div></div><div style="width:1px;height:30px;background:#2A2723;"></div><div style="flex:1;font-size:15px;">Llamar al diseñador</div><span style="width:8px;height:8px;border-radius:50%;background:#D98C86;"></span></div>
+              <div style="display:flex;align-items:center;gap:14px;padding:15px 17px;background:#161310;border:1px solid #242018;border-radius:15px;"><div style="text-align:center;flex:none;width:44px;"><div style="font-size:17px;font-weight:600;">18:30</div></div><div style="width:1px;height:30px;background:#2A2723;"></div><div style="flex:1;font-size:15px;">Revisar cotización de impresión</div><span style="width:8px;height:8px;border-radius:50%;background:#E8B65C;"></span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#7C766C;margin-bottom:12px;">Próximos</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;gap:14px;padding:15px 17px;background:#161310;border:1px solid #242018;border-radius:15px;"><div style="text-align:center;flex:none;width:44px;"><div style="font-size:13px;color:#B8B1A6;">Mié</div><div style="font-size:13px;color:#7C766C;">09:00</div></div><div style="width:1px;height:30px;background:#2A2723;"></div><div style="flex:1;font-size:15px;">Enviar propuesta a cliente</div></div>
+              <div style="display:flex;align-items:center;gap:14px;padding:15px 17px;background:#161310;border:1px solid #242018;border-radius:15px;"><div style="text-align:center;flex:none;width:44px;"><div style="font-size:13px;color:#B8B1A6;">Vie</div><div style="font-size:13px;color:#7C766C;">12:00</div></div><div style="width:1px;height:30px;background:#2A2723;"></div><div style="flex:1;font-size:15px;">Revisión semanal</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:0 26px 26px;background:linear-gradient(to top,#0E0D0C 62%,rgba(14,13,12,0));">
+          <div style="height:58px;border-radius:16px;border:1px solid #4A3C1E;color:#E8B65C;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:600;font-size:16px;"><span style="width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#F5D592,#B9832F);"></span>Agregar por voz</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 14 CONFIGURACIÓN -->
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7C766C;margin-bottom:14px;"><span style="color:#E8B65C;">14</span>&nbsp;&nbsp;Configuración</div>
+      <div style="width:384px;height:812px;background:#0E0D0C;border-radius:46px;border:1px solid #2A2723;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 5px #060605;position:relative;overflow:hidden;flex:none;display:flex;flex-direction:column;">
+        <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#050505;border-radius:16px;z-index:20;"></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;flex:none;"><span style="font-size:15px;font-weight:600;">9:41</span><span style="width:22px;height:11px;border:1.5px solid #F4EFE7;border-radius:3px;position:relative;display:inline-block;opacity:.85;"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;right:6px;background:#F4EFE7;border-radius:1px;"></span></span></div>
+        <div style="flex:1;padding:8px 26px 0;display:flex;flex-direction:column;gap:22px;overflow:hidden;">
+          <div style="font-family:'Instrument Serif',serif;font-size:34px;">Configuración</div>
+          <!-- perfil -->
+          <div style="display:flex;align-items:center;gap:15px;padding:16px 18px;background:#161310;border:1px solid #242018;border-radius:18px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(140deg,#E8B65C,#B9832F);display:flex;align-items:center;justify-content:center;font-weight:600;color:#1A1206;font-size:18px;flex:none;">J</div>
+            <div style="flex:1;"><div style="font-size:16px;font-weight:600;">Jonathan</div><div style="font-size:13px;color:#7C766C;">America/Denver</div></div>
+            <span style="color:#5E594F;font-size:18px;">›</span>
+          </div>
+          <!-- metas -->
+          <div>
+            <div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#7C766C;margin-bottom:10px;">Metas principales</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;"><span style="font-size:13px;color:#D9CFC0;padding:7px 13px;background:#1A1713;border-radius:20px;">Libertad financiera</span><span style="font-size:13px;color:#D9CFC0;padding:7px 13px;background:#1A1713;border-radius:20px;">Enfoque</span><span style="font-size:13px;color:#D9CFC0;padding:7px 13px;background:#1A1713;border-radius:20px;">Cloud Studio a flote</span></div>
+          </div>
+          <!-- opciones -->
+          <div style="display:flex;flex-direction:column;gap:1px;background:#242018;border-radius:16px;overflow:hidden;">
+            <div style="display:flex;align-items:center;padding:16px 18px;background:#161310;"><span style="flex:1;font-size:15px;">Idioma</span><span style="font-size:14px;color:#8B857B;">Español · English</span></div>
+            <div style="display:flex;align-items:center;padding:16px 18px;background:#161310;"><span style="flex:1;font-size:15px;">Manos libres al manejar</span><span style="width:44px;height:26px;border-radius:14px;background:#E8B65C;position:relative;flex:none;"><span style="position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#1A1206;"></span></span></div>
+            <div style="display:flex;align-items:center;padding:16px 18px;background:#161310;"><span style="flex:1;font-size:15px;">Contexto por defecto</span><span style="font-size:14px;color:#8B857B;">Preguntar siempre</span></div>
+          </div>
+          <!-- privacidad -->
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border:1px solid #242018;border-radius:16px;">
+            <span style="width:16px;height:16px;border:1.5px solid #9FCF9F;border-radius:4px;margin-top:2px;flex:none;"></span>
+            <div style="font-size:13px;line-height:1.5;color:#9B948A;">Tus datos están aislados y cifrados. Solo tú puedes verlos — incluido el diario. <span style="color:#9FCF9F;">Aislamiento activo desde el día 1.</span></div>
+          </div>
+          <div style="text-align:center;font-size:14px;color:#8B857B;padding-top:4px;">Cerrar sesión</div>
+        </div>
+        <div style="height:6px;width:130px;background:#3A362F;border-radius:3px;margin:0 auto 9px;flex:none;"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
